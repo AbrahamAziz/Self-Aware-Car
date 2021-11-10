@@ -1,24 +1,3 @@
-'''
-EPIC Robot
-Version P1.2
-
-Program controls Raspberry Pi 3 Robot
-
-THIS VERSION USES PWM
-
-Updates:
-
-#Last name,Student Number
-#Stephenson,400258189
-# Pietropaolo, 400271189
-# Aziz, 400270763
-#_________, _________
-#Please also rename this file (last names of all group members)
-
-'''
-
-#Import Libraries - Do not edit this code
-
 import RPi.GPIO as GPIO
 import time
 
@@ -36,29 +15,17 @@ motBDir = 6
 trigger = 16
 echo = 19
 
-# Step 1 -------------------------------------------------------------------------------------------------------------
-#Set pin modes - use variables from previous section
-
 GPIO.setup(motASpeed,GPIO.OUT)
 GPIO.setup(motADir,GPIO.OUT)
 GPIO.setup(motBSpeed,GPIO.OUT)
 GPIO.setup(motBDir,GPIO.OUT)
 GPIO.setup(trigger,GPIO.OUT)
 GPIO.setup(echo,GPIO.IN)
-
-# End of Step 1 ------------------------------------------------------------------------------------------------------
-
-# Step 2 -------------------------------------------------------------------------------------------------------------
-#implement PWM for the motors
-
 freq = 50
 pwmMotA = GPIO.PWM(motASpeed,freq)
 pwmMotB = GPIO.PWM(motBSpeed,freq)
 
-# End of Step 2 ------------------------------------------------------------------------------------------------------
 
-# Step 3 -------------------------------------------------------------------------------------------------------------
-# Motor Functions
 def stop():
     """Turns the motors off, stopping the robot"""
     pwmMotA.ChangeDutyCycle(0)
@@ -93,11 +60,7 @@ def left(A,B):
     GPIO.output(motADir1)
     pwmMotB.ChangeDutyCycle(B)
     GPIO.output(motBDir,0)
-    
-# End of Step 3 ------------------------------------------------------------------------------------------------------
 
-# Start of Step 4 ----------------------------------------------------------------------------------------------------
-# Obstacle Avoidance Code
 def checkDistance():
     """Uses the ultrasonic sensor to check how far away objects are from the front of the robot"""
     # Set up GPIO outputs to shoot an ultrasonic pulse
@@ -128,9 +91,6 @@ def checkDistance():
     
     return distance
 
-# End of Step 4 ------------------------------------------------------------------------------------------------------
-
-# Step 5 -------------------------------------------------------------------------------------------------------------
 def isNearObstacle(howNear):
     distance = checkDistance()                # Find distance of object using function from previous step
     print("isNearObstacle: " + str(distance))
@@ -153,21 +113,14 @@ def avoidObstacle(reverseTime, turnTime):
     # Find a time that causes for a 90 degree turn (requires some experimentation)
     time.sleep(turnTime)
     stop()
-    
-# End of Step 5 ------------------------------------------------------------------------------------------------------
 
-# Step 6 -------------------------------------------------------------------------------------------------------------
-# Start motors - do not edit
-## Before attempting this step, you'll want to test out your motor functions
 pwmMotA.start(0)
 pwmMotB.start(0)
-##
-### Initialize a few variables - you may have to experiment to find the right turnTime for a 90 degree turn
+
 howNear = 15                        # The distance (in cm) an object must be for the robot to reverse and turn right      
 reverseTime= 1                   # The time (in seconds) that the robot will reverse for
 turnTime = 1                  # The time (in seconds) that the robot will turn right for
-##
-### This try-except let's the robot drive around and avoid obstacles until the user presses CTRL+C
+
 try:
     # Set trigger to False (Low)
     GPIO.output(trigger,False)
